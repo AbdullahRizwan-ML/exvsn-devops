@@ -6,8 +6,6 @@ services:
     container_name: exvsn-backend-jenkins
     ports:
       - "8001:8000"
-    volumes:
-      - jenkins-code:/app
     environment:
       - MONGO_URI=mongodb+srv://abdullahrizwan2802:abdullah$$28@cluster0.5l1oo.mongodb.net/exvision_db?retryWrites=true&w=majority
       - DB_NAME=exvision_db
@@ -18,13 +16,8 @@ services:
     container_name: exvsn-frontend-jenkins
     ports:
       - "3001:3000"
-    volumes:
-      - jenkins-code:/app
     environment:
       - REACT_APP_API_URL=http://backend:8000
     depends_on:
       - backend
     restart: unless-stopped
-
-volumes:
-  jenkins-code:
