@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
     const fakeToken = "exvsn-bypass-jwt-2025";
     const fakeUser = {
       email: "abc@bc.com",
-      name: " ",
+      name: "Jenkins ",
       role: "Admin"
     };
 
