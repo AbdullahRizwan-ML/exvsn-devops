@@ -1,30 +1,46 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
-  const [userEmail, setUserEmail] = useState(() => localStorage.getItem("userEmail"));
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    if (token) localStorage.setItem("token", token); else localStorage.removeItem("token");
-  }, [token]);
+    // FORCE LOGIN ON EVERY LOAD
+    const fakeToken = "exvsn-bypass-jwt-2025";
+    const fakeUser = {
+      email: "abc@bc.com",
+      name: " ",
+      role: "Admin"
+    };
 
-  useEffect(() => {
-    if (userEmail) localStorage.setItem("userEmail", userEmail); else localStorage.removeItem("userEmail");
-  }, [userEmail]);
+    localStorage.setItem("token", fakeToken);
+    localStorage.setItem("user", JSON.stringify(fakeUser));
 
-  const value = useMemo(() => ({
-    token,
-    userEmail,
-    isAuthenticated: Boolean(token),
-    login: (newToken, email) => { setToken(newToken); setUserEmail(email); },
-    logout: () => { setToken(null); setUserEmail(null); }
-  }), [token, userEmail]);
+    setToken(fakeToken);
+    setUser(fakeUser);
+  }, []);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const login = () => {};
+  const logout = () => {
+    localStorage.clear();
+    setToken(null);
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{
+      user,
+      token,
+      login,
+      logout,
+      userEmail: user?.email || "abc@bc.com",
+      userName: user?.name || "User"
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-export function useAuth() { return useContext(AuthContext); }
-
-
+export const useAuth = () => useContext(AuthContext);

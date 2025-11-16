@@ -6,7 +6,7 @@ import Chart from "../components/ui/Chart";
 import { useAuth } from "../context/AuthContext";
 
 function UserProfile() {
-  const { userEmail } = useAuth();
+  const { userEmail, userName } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   
   const userStats = [
@@ -59,7 +59,7 @@ function UserProfile() {
           </div>
           <div>
             <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: "#111827" }}>
-              Welcome back, {userEmail?.split('@')[0]}!
+              Welcome back, {userName}!
             </h1>
             <p style={{ margin: 4, color: "#6b7280", fontSize: 16 }}>
               Here's what's happening with your business today.
